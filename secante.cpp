@@ -1,43 +1,23 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
+
+using namespace std;
 
 double f(double x);
+void secante(double x_i_1, double x_i, int it, double tol);
 
-double secante(double x_i_1,      // x_i_ 1 = aproximacion inicial por la izquierda
-			   double x_i,      // x_i  = aproximacion inicial por la derecha
-			   int it,      // it   = num de iteraciones
-			   double tol){     // tol  = tolerancia del error
-	// Inicializacion de variables
-	int i = 1;   // conteo de iteracion
-	double e = 1;;   // error 100%
-	double x[100];
+int main(){
+	double x_i_1;// x_i_ 1 = aproximacion inicial por la izquierda
+	double x_i;// x_i  = aproximacion inicial por la derecha
+	int it;//it = num de iteraciones
+	double tol;//Tolerancia de error
 	
-	printf("Valor de aproximacion por la izquierda x0: "); scanf("%lf",&x_i_1);
-	printf("Valor de aproximacion por la derecha x1: "); scanf("%lf",&x_i);
-	printf("Maximo de iteraciones: "); scanf("%d",&it);
-	printf("Tolerancia de error: "); scanf("%lf",&tol);
+	cout<<"Metodo de la Secante"<<endl;
 	
-	x[i-1] = x_i_1;
-	x[i] = x_i;
+	secante(x_i_1,x_i,it,tol);
 	
-	printf(" i | x[i-1] | x[i]   | x[i+1] | e\n");
-	
-	while (i < it && e >= tol) {
-		x[i+1] = x[i]-( f(x[i])*(x[i-1] - x[i]) / (f(x[i-1]) - f(x[i])) );
-		
-		e = (fabs(x[i+1] - x[i])/fabs(x[i+1]))*100;
-		
-		printf("%.2d | %.3f | %.3f | %.3f | %.15f \n",i, x[i-1], x[i], x[i+1], e);
-		if (tol >= e){
-			printf("\nLa mejor aproximacion de x es %.16f en %i iteraciones.", x[i], i);
-			exit(1);
-		}
-		
-		i++;
-	}
-	
-	printf("\nLa mejor aproximacion de x es %.16f en %i iteraciones.", x[i], i);
+	return 0;
 }
 
 double f(double x){
@@ -45,11 +25,35 @@ double f(double x){
 	return x;
 }
 
-int main(){
-	printf("\n");
-	double x_i_1;     // x_i_ 1 = aproximacion inicial por la izquierda
-	double x_i;    // x_i  = aproximacion inicial por la derecha
-	int it;  // it   = num de iteraciones
-	double tol;
-	secante( x_i_1, x_i,  it,  tol);
+void secante(double x_i_1, double x_i, int it, double tol){
+	int i = 1;// conteo de iteracion
+	double e = 1;;// error 100%
+	double x[100];
+	
+	//Obtencion de Datos
+	cout<<endl<<"Valor de aproximacion por la izquierda x0: "; 
+	cin>>x_i_1;
+	cout<<endl<<"Valor de aproximacion por la derecha x1: "; 
+	cin>>x_i;
+	cout<<endl<<"Maximo de iteraciones: "; 
+	cin>>it;
+	cout<<endl<<"Tolerancia de error: "; 
+	cin>>tol;
+	
+	x[i-1] = x_i_1;
+	x[i] = x_i;
+	
+	cout<<endl<<"i | x[i-1] | x[i]   | x[i+1] | e\n"<<endl;
+	
+	while (i < it && e >= tol) {
+		x[i+1] = x[i]-( f(x[i])*(x[i-1] - x[i]) / (f(x[i-1]) - f(x[i])) );
+		e = (fabs(x[i+1] - x[i])/fabs(x[i+1]))*100;
+		printf("%.2d | %.3f | %.3f | %.3f | %.15f \n",i, x[i-1], x[i], x[i+1], e);
+		if (tol >= e){
+			printf("\nLa mejor aproximacion de x es %.16f en %i iteraciones.\n", x[i], i);
+			exit(1);
+		}
+		i++;
+	}
+	printf("\nLa mejor aproximacion de x es %.16f en %i iteraciones.\n", x[i], i);
 }
